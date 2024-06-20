@@ -47,7 +47,12 @@ namespace KHSave.SaveEditor.Common.ViewModels
                         stream.Read(data, 0, data.Length);
                         selectedEntry.ImportData(data);
                     }
-
+                    
+                    SingleInputDialog sid = new() { Description = "Please enter a name for the save slot", Text = Path.GetFileNameWithoutExtension(fileName) };
+                    sid.ShowDialog();
+                    if (sid.DialogResult == true && !string.IsNullOrEmpty(sid.Text))
+                        Entries.SelectedValue?.Rename(sid.Text);
+                    
                     using (var stream = File.Create(_archiveFileName))
                         archive.Write(stream);
 
